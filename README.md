@@ -4,7 +4,9 @@
 > Use NCBI-SRA-toolkit to download paired-end RNA-seq data for P.sambesii that has been generated before (###Ref)
 > 
 > ```fasterq-dump -S SRR8243961```
+> 
 > Headers of read files are modified using sed. Dots in headers are exchanged with underspace and everything starting from the first blank space is deleted.
+> 
 ### 1.2 Mask the genome using repeatmodeler and repeatmasker
 > ```BuildDatabase -name ES601_gene_DB -engine ncbi psambesii_genome.fasta RepeatModeler -engine ncbi -pa 16 -database ES601_gene_DB```
 >
