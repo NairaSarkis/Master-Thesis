@@ -49,7 +49,25 @@
 > 
 > The 24 barcodes that were used are written into an Excel file and saved as tab delimited .txt file and renamed with suffix .tsv
 > --------------------------------------------------TABLE------------------------------
-> The forward paired reads are used.
+> The forward paired reads are used and sorted into files according to the embryo sample they came from by using the barcodes.
+> 
 > ```demultiplex demux -r -s 1 -e 6 barcodes24.tsv Psam-1_fastp_forward_paired_umiext.fq```
 > 
+> Only the headers from the forward reads are needed and extracted using sed.
 > 
+> ```for f in Psam-1_fastp_forward_paired_Celseq*.fq; do sed -n '1~4p' $f > $f.list; done```
+>
+> Create a list of all headers without "@" and without everything after the first space character.
+> 
+>```for f in *.list; do sed 's/\s.*$//' $f > $f.fixedlist; done```
+>
+>```for f in *.list.fixedlist; do sed 's/^@//g' $f > $f.2; done```
+>
+> The sequences for each sample are extracted into seperate files
+> 
+> ```for f in Psam-1*.list.fixedlist.2; do pullseq -i Psam-1_fastp_reverse_paired_umiext.fq -n $f > $f.sequences_pullseq.fq; done```
+>
+### 3. Mapping reads onto genome
+>
+> Indexing the genome using kallisto
+> ```kallisto index -i P_sambesii21.index -k 21 psambesii_genome.fasta.masked```
