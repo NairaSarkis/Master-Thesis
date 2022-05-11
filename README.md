@@ -1,5 +1,24 @@
 # **Naïra Sarkis/Master-Thesis**
-## 1. CELSeq2 downstream analysis 
+## 1. P.sambesii whole genome annotation
+### 1.1 Obtain RNA-seq data from NCBI and prepare read files
+> Use NCBI-SRA-toolkit to download paired-end RNA-seq data for P.sambesii that has been generated before (###Ref)
+> 
+> ```fasterq-dump -S SRR8243961```
+> Headers of read files are modified using sed. Dots in headers are exchanged with underspace and everything starting from the first blank space is deleted.
+### 1.2 Mask the genome using repeatmodeler and repeatmasker
+> ```BuildDatabase -name ES601_gene_DB -engine ncbi psambesii_genome.fasta RepeatModeler -engine ncbi -pa 16 -database ES601_gene_DB```
+>
+> ```RepeatClassifier -consensi ES601_gene_DB-families.fa```
+>
+> ```RepeatMasker -pa 16 -e ncbi -lib ES601_gene_DB-families.fa.classified psambesii_genome.fasta```
+### 1.3 Index genome and align reads using gmap/gsnap
+> ```gmap_build -D /scratch/nsarkisk/Psam_annotation -d genome_index psambesii_genome.fasta.masked```
+> 
+> ```gsnap -D /scratch/nsarkisk/Psam_annotation -d genome_index -A sam -o /scratch/nsarkisk/Psam_annotation/psambesii-gsnap.sam SRR8243961_1.sednew.fastq SRR8243961_2.sednew.fastq```
+### 1.4 Gene predictions using the braker2 pipeline
+> ```braker.pl --species=PlectusSambesii --softmasking --AUGUSTUS_CONFIG_PATH=/scratch/nsarkisk/Psam_annotation/augustus-config/ --genome=psambesii_genome.fasta.masked --bam=psambesii-gsnap.bam.sorted```
+
+## 2. CELSeq2 downstream analysis 
 
 ### Tools implemented in this analysis:
 
