@@ -48,4 +48,8 @@
 > We are sorting the bases at positions 0-6 (UMIs have been extracted). The programme, by default, allows for one mismatch.
 > 
 > The 24 barcodes that were used are written into an Excel file and saved as tab delimited .txt file and renamed with suffix .tsv
-> The forward paired reads are used. 
+> --------------------------------------------------TABLE------------------------------
+> The forward paired reads are used.
+> ```demultiplex demux -r -s 1 -e 6 barcodes24.tsv Psam-1_fastp_forward_paired_umiext.fq```
+> 
+> 
