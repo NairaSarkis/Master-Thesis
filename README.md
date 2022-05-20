@@ -1,5 +1,5 @@
 # **Naïra Sarkis/Master-Thesis**
-## 1. P.sambesii whole genome annotation
+## 1. *P.sambesii* whole genome annotation
 ### 1.1 Obtain RNA-seq data from NCBI and prepare read files
 > Use NCBI-SRA-toolkit to download paired-end RNA-seq data for P.sambesii that has been generated before (###Ref)
 > 
