@@ -1,11 +1,11 @@
 # **Naïra Sarkis/Master-Thesis**
 ## 1. *P. sambesii* whole genome annotation
-### 1.1 Obtain RNA-seq data from NCBI and prepare read files
-> Use NCBI-SRA-toolkit to download paired-end RNA-seq data for P.sambesii that has been generated before (###Ref)
+### 1.1 Obtaining RNA-seq data from NCBI and preparing read files
+> The NCBI-SRA-toolkit was used to download paired-end RNA-seq data for *Plectus sambesii* that has been generated before (###Ref)
 > 
 > ```fasterq-dump -S SRR8243961```
 > 
-> Headers of read files are modified using sed. Dots in headers are exchanged with underspace and everything starting from the first blank space is deleted.
+> For better program compatibility, headers of read files were modified using sed command. Dots in headers were exchanged with underspace and everything starting from the first blank space in a line was deleted.
 > 
 ### 1.2 Mask the genome using repeatmodeler and repeatmasker
 > ```BuildDatabase -name ES601_gene_DB -engine ncbi psambesii_genome.fasta RepeatModeler -engine ncbi -pa 16 -database ES601_gene_DB```
