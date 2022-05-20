@@ -19,18 +19,31 @@
 > ```gsnap -D /scratch/nsarkisk/Psam_annotation -d genome_index -A sam -o /scratch/nsarkisk/Psam_annotation/psambesii-gsnap.sam SRR8243961_1.sednew.fastq SRR8243961_2.sednew.fastq```
 ### 1.4 Gene predictions using the braker2 pipeline
 > ```braker.pl --species=PlectusSambesii --softmasking --AUGUSTUS_CONFIG_PATH=/scratch/nsarkisk/Psam_annotation/augustus-config/ --genome=psambesii_genome.fasta.masked --bam=psambesii-gsnap.bam.sorted```
+> 
 > A gff3 file containing the annotation was obtained and a file containing all coding sequences (CDS).
 ## 2. Hox gene analysis 
 > The braker CDS ouput file was translated to get proteome and a databank was generated from it using blast+. 
+> 
 > ```makeblastdb -in psam_PB3_r3.braker3.fasta -dbtype prot -title Plectus-proteome```
+> Previously provided hox gene sequences (###ref) were blasted against the new proteome.
+> 
+> ```blastp -query hox-proteins-plectus.fasta -db psam_PB3_r3.braker3.fasta -evalue 1e-30 -max_target_seqs 5 -outfmt 6 -out blastp_hox_vs_proteome.csv```
+> 
+> The output csv file contains hox genes as query and corresponding target sequence IDs in new P. sambesii proteome. Target sequence IDs are then used to find hox proteins in contigs of new annotation gff3 file. 
+>
+> ```grep '>target-sequenceID<' psam_PB3_r3.braker.gff3 > hox_'target-sequenceID'```
 
 ## 3. Orthology Inference
 ### 3.1 OrthFinder Analysis
 > 3.1.1 The annotation gff3 file from the braker output is converted into the right gff3 format using agat.
+> 
 > ```agat_sp_extract_sequences.pl -g longest.gff3 -f psam-genome_folded.fasta -o longest.fa -p```
+> 
 > Headers were changed to "PLESAM|ID" using sed command.
 > Directory "Fasta_files" contained proteosome fasta files from ###SPECIES and Plectus sambesii proteome from braker2 output.
+> 
 > ```orthofinder -f Fasta_files/```
+> 
 > 3.1.2 Search for orthogroups for hox genes.
 >  
 
@@ -52,7 +65,7 @@
 >
 > 1.4. Removing low complexity reads
 >
-> Complexity describes the percentage of base that is different from its next base. The complexity filter default value is 30, which means 30 % complexity is required, to keep the reads. (SOURCE?)
+> Complexity describes the percentage of base that is different from its next base. The complexity filter default value is 30, which means 30 % complexity is required, to keep the reads. (###SOURCE?)
 >
 > ```fastp -i Psam-1_fastp_adapter_fasta_polyg3_polyx_min36_reverse_paired.fq.gz -o Psam-1_fastp_adapter_fasta_polyg3_polyx_min36_minlowcomplexity_reverse_paired.fq.gz -l 36 -y -p -j Psam-1_fastp_adapter_fasta_polyg3_polyx_min36_minlowcomplexity_reverse_paired.json -h Psam-1_fastp_adapter_fasta_polyg3_polyx_min36_minlowcomplexity_reverse_paired.html```
 >
