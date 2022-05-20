@@ -21,8 +21,20 @@
 > ```braker.pl --species=PlectusSambesii --softmasking --AUGUSTUS_CONFIG_PATH=/scratch/nsarkisk/Psam_annotation/augustus-config/ --genome=psambesii_genome.fasta.masked --bam=psambesii-gsnap.bam.sorted```
 > 
 > A gff3 file containing the annotation was obtained and a file containing all coding sequences (CDS).
-## 2. Hox gene analysis 
-> The braker CDS ouput file was translated to get proteome and a databank was generated from it using blast+. 
+
+## 3. Orthology Inference and hox gene analysis
+### 3.1 OrthoFinder Analysis
+> The annotation gff3 file from the braker output is converted into the right gff3 format using agat
+> 
+> ```agat_sp_extract_sequences.pl -g longest.gff3 -f psam-genome_folded.fasta -o longest.fa -p```
+> 
+> Headers were changed to "PLESAM|ID" using sed command.
+> Directory "Fasta_files" is created and contains proteosome fasta files from ###SPECIES and Plectus sambesii proteome from braker2 output.
+> 
+> ```orthofinder -f Fasta_files/```
+> 
+### 3.2 Search orthogroups for hox genes
+> The braker CDS ouput file is translated in order to get a proteome file (###method) and a databank is generated from it using blast+. 
 > 
 > ```makeblastdb -in psam_PB3_r3.braker3.fasta -dbtype prot -title Plectus-proteome```
 > Previously provided hox gene sequences (###ref) were blasted against the new proteome.
@@ -32,26 +44,32 @@
 > The output csv file contains hox genes as query and corresponding target sequence IDs in new P. sambesii proteome. Target sequence IDs are then used to find hox proteins in contigs of new annotation gff3 file. 
 >
 > ```grep '>target-sequenceID<' psam_PB3_r3.braker.gff3 > hox_'target-sequenceID'```
-
-## 3. Orthology Inference
-### 3.1 OrthFinder Analysis
-> 3.1.1 The annotation gff3 file from the braker output is converted into the right gff3 format using agat.
+>
+> Annotation IDs of hox genes are used to search in output file "Orthogroups.txt" and saved as new files.
+> Expl.: ```grep "g6951.t1" Orthogroups.txt > hox-g6951.t1```
 > 
-> ```agat_sp_extract_sequences.pl -g longest.gff3 -f psam-genome_folded.fasta -o longest.fa -p```
+> OrthoFinder creates a directory "Orthogroup_Sequences" by default, containing amino acid fasta sequences of all genes within each orthogroup. Fasta files matching respective Hox IDs are stored in new directories.
+> Orthogroup fasta files to each hox protein are aligned using mafft.
 > 
-> Headers were changed to "PLESAM|ID" using sed command.
-> Directory "Fasta_files" contained proteosome fasta files from ###SPECIES and Plectus sambesii proteome from braker2 output.
+> ```mafft --localpair --maxiterate 1000 OG0000191.fa > OG0000191.fa.aln```
 > 
-> ```orthofinder -f Fasta_files/```
+> Spurious sequences are removed using trimal.
 > 
-> 3.1.2 Search for orthogroups for hox genes.
->  
+> ```trimal -in OG0007202.fa.aln -out OG0007202.fa.aln.less.clw -resoverlap 0.75 -seqoverlap 80 -clustal```
+> 
+> Regions that do not align well are removed automatically.
+>
+> ```trimal -in OG0000191b.fa.aln -out OG0000191b.fa.aln.clean.clw -automated1 -clustal```
+> 
+> Maximum likelihood phylogenic trees are generated using iqtree.
+> 
+> ```iqtree2 -s OG0016393.fa.aln.clean.clw -m TEST -bb 1000 -nt AUTO```
 
 ## 4. CELSeq2 downstream analysis 
 
 ### Tools implemented in this analysis:
 
-- Table of versions
+> ###Table of versions
 ### 1. Removing adapters and quality control
 > 1.1. Create fasta files with known adapters
 > 
