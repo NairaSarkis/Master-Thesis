@@ -22,8 +22,11 @@
 > 
 > A gff3 file containing the annotation was obtained and a file containing all coding sequences (CDS).
 
-## 2. Orthology Inference and hox gene analysis
-### 2.1 OrthoFinder Analysis
+## 2. P. sambesii functional annotation 
+### 2.1 Orthology Inference and hox gene analysis
+
+2.1.1 OrthoFinder Analysis
+> 
 > The annotation gff3 file from the braker output is converted into the right gff3 format using agat
 > 
 > ```agat_sp_extract_sequences.pl -g longest.gff3 -f psam-genome_folded.fasta -o longest.fa -p```
@@ -33,7 +36,7 @@
 > 
 > ```orthofinder -f Fasta_files/```
 > 
-### 2.2 Search orthogroups for hox genes
+2.1.2 Search orthogroups for hox genes
 > The braker CDS ouput file is translated in order to get a proteome file (###method) and a databank is generated from it using blast+. 
 > 
 > ```makeblastdb -in psam_PB3_r3.braker3.fasta -dbtype prot -title Plectus-proteome```
@@ -64,6 +67,15 @@
 > Maximum likelihood phylogenic trees are generated using iqtree.
 > 
 > ```iqtree2 -s OG0016393.fa.aln.clean.clw -m TEST -bb 1000 -nt AUTO```
+
+### 2.2 Interproscan analysis
+
+> The P. sambesii proteome file (from braker2) was split into 37 files using faSplit in order to run InterProscan with smaller files.
+> 
+> ```faSplit sequence psam_PB3_r3.braker3.aa 37 Psam```
+> 
+> ```for f in Psam*.fa; do /my_interproscan/interproscan-5.55-88.0/interproscan.sh -i $f -f tsv --goterms --pathways; done```
+> 
 
 ## 3. CELSeq2 downstream analysis 
 
