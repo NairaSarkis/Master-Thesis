@@ -11,13 +11,13 @@ Versions of implemented programs:
 > 
 > For better program compatibility, headers of read files were modified using sed command. Dots in headers were exchanged with underspace and everything starting from the first blank space in a line was deleted.
 > 
-### 1.2 Mask the genome using repeatmodeler and repeatmasker
+### 1.2 Masking the genome using repeatmodeler and repeatmasker
 > ```BuildDatabase -name ES601_gene_DB -engine ncbi psambesii_genome.fasta RepeatModeler -engine ncbi -pa 16 -database ES601_gene_DB```
 >
 > ```RepeatClassifier -consensi ES601_gene_DB-families.fa```
 >
 > ```RepeatMasker -pa 16 -e ncbi -lib ES601_gene_DB-families.fa.classified psambesii_genome.fasta```
-### 1.3 Index genome and align reads using gmap/gsnap
+### 1.3 Indexing genome and aligning reads using gmap/gsnap
 > ```gmap_build -D /scratch/nsarkisk/Psam_annotation -d genome_index psambesii_genome.fasta.masked```
 > 
 > ```gsnap -D /scratch/nsarkisk/Psam_annotation -d genome_index -A sam -o /scratch/nsarkisk/Psam_annotation/psambesii-gsnap.sam SRR8243961_1.sednew.fastq SRR8243961_2.sednew.fastq```
