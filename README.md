@@ -22,8 +22,8 @@
 > 
 > A gff3 file containing the annotation was obtained and a file containing all coding sequences (CDS).
 
-## 3. Orthology Inference and hox gene analysis
-### 3.1 OrthoFinder Analysis
+## 2. Orthology Inference and hox gene analysis
+### 2.1 OrthoFinder Analysis
 > The annotation gff3 file from the braker output is converted into the right gff3 format using agat
 > 
 > ```agat_sp_extract_sequences.pl -g longest.gff3 -f psam-genome_folded.fasta -o longest.fa -p```
@@ -33,7 +33,7 @@
 > 
 > ```orthofinder -f Fasta_files/```
 > 
-### 3.2 Search orthogroups for hox genes
+### 2.2 Search orthogroups for hox genes
 > The braker CDS ouput file is translated in order to get a proteome file (###method) and a databank is generated from it using blast+. 
 > 
 > ```makeblastdb -in psam_PB3_r3.braker3.fasta -dbtype prot -title Plectus-proteome```
@@ -65,7 +65,7 @@
 > 
 > ```iqtree2 -s OG0016393.fa.aln.clean.clw -m TEST -bb 1000 -nt AUTO```
 
-## 4. CELSeq2 downstream analysis 
+## 3. CELSeq2 downstream analysis 
 
 ### Tools implemented in this analysis:
 
