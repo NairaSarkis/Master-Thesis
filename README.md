@@ -19,8 +19,22 @@
 > ```gsnap -D /scratch/nsarkisk/Psam_annotation -d genome_index -A sam -o /scratch/nsarkisk/Psam_annotation/psambesii-gsnap.sam SRR8243961_1.sednew.fastq SRR8243961_2.sednew.fastq```
 ### 1.4 Gene predictions using the braker2 pipeline
 > ```braker.pl --species=PlectusSambesii --softmasking --AUGUSTUS_CONFIG_PATH=/scratch/nsarkisk/Psam_annotation/augustus-config/ --genome=psambesii_genome.fasta.masked --bam=psambesii-gsnap.bam.sorted```
+> A gff3 file containing the annotation was obtained and a file containing all coding sequences (CDS).
+## 2. Hox gene analysis 
+> The braker CDS ouput file was translated to get proteome and a databank was generated from it using blast+. 
+> ```makeblastdb -in psam_PB3_r3.braker3.fasta -dbtype prot -title Plectus-proteome```
 
-## 2. CELSeq2 downstream analysis 
+## 3. Orthology Inference
+### 3.1 OrthFinder Analysis
+> 3.1.1 The annotation gff3 file from the braker output is converted into the right gff3 format using agat.
+> ```agat_sp_extract_sequences.pl -g longest.gff3 -f psam-genome_folded.fasta -o longest.fa -p```
+> Headers were changed to "PLESAM|ID" using sed command.
+> Directory "Fasta_files" contained proteosome fasta files from ###SPECIES and Plectus sambesii proteome from braker2 output.
+> ```orthofinder -f Fasta_files/```
+> 3.1.2 Search for orthogroups for hox genes.
+>  
+
+## 4. CELSeq2 downstream analysis 
 
 ### Tools implemented in this analysis:
 
