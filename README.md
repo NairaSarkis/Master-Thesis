@@ -1,4 +1,4 @@
-# **Naïra Sarkis/Master-Thesis**
+# **Naïra Sarkis/Master Thesis**
 ## 1. *P. sambesii* whole genome annotation
 ### 1.1 Obtaining RNA-seq data from NCBI and preparing read files
 > The NCBI-SRA-toolkit was used to download paired-end RNA-seq data for *Plectus sambesii* that has been generated before (###Ref)
