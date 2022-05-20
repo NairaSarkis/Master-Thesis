@@ -1,4 +1,8 @@
 # **Naïra Sarkis/Master Thesis**
+Here further information on implemented tools and commands used in the bioinformatic analyses for my Master's Thesis is provided.
+
+Versions of implemented programs:
+###Table
 ## 1. *P. sambesii* whole genome annotation
 ### 1.1 Obtaining RNA-seq data from NCBI and preparing read files
 > The NCBI-SRA-toolkit was used to download paired-end RNA-seq data for *Plectus sambesii* that has been generated before (###Ref)
