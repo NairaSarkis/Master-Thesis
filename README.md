@@ -1,5 +1,5 @@
 # **Naïra Sarkis/Master-Thesis**
-## 1. *P.sambesii* whole genome annotation
+## 1. *P. sambesii* whole genome annotation
 ### 1.1 Obtain RNA-seq data from NCBI and prepare read files
 > Use NCBI-SRA-toolkit to download paired-end RNA-seq data for P.sambesii that has been generated before (###Ref)
 > 
@@ -22,7 +22,7 @@
 > 
 > A gff3 file containing the annotation was obtained and a file containing all coding sequences (CDS).
 
-## 2. P. sambesii functional annotation 
+## 2. *P. sambesii* functional annotation 
 ### 2.1 Orthology Inference and hox gene analysis
 
 2.1.1 OrthoFinder Analysis
@@ -44,7 +44,7 @@
 > 
 > ```blastp -query hox-proteins-plectus.fasta -db psam_PB3_r3.braker3.fasta -evalue 1e-30 -max_target_seqs 5 -outfmt 6 -out blastp_hox_vs_proteome.csv```
 > 
-> The output csv file contains hox genes as query and corresponding target sequence IDs in new P. sambesii proteome. Target sequence IDs are then used to find hox proteins in contigs of new annotation gff3 file. 
+> The output csv file contains hox genes as query and corresponding target sequence IDs in new *P. sambesii* proteome. Target sequence IDs are then used to find hox proteins in contigs of new annotation gff3 file. 
 >
 > ```grep '>target-sequenceID<' psam_PB3_r3.braker.gff3 > hox_'target-sequenceID'```
 >
@@ -76,6 +76,9 @@
 > 
 > ```for f in Psam*.fa; do /my_interproscan/interproscan-5.55-88.0/interproscan.sh -i $f -f tsv --goterms --pathways; done```
 > 
+> Chunked Interproscan results were combined to one tsv file.
+> 
+> ```cat Psam*.fa.tsv > interproscan-final.fa.tsv```
 
 ## 3. CELSeq2 downstream analysis 
 
