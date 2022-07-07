@@ -1,5 +1,5 @@
 # **Naïra Sarkis/Master Thesis**
-In the following, further information on implemented tools and commands used in the bioinformatic analyses for my Master's Thesis is provided. All bioinformatic analyses have been performed on the HPC RRZK CHEOPS of the Regional Computing Centre (RRZK) of the University of Cologne, if not noted otherwise. 
+In the following, further information on implemented tools and commands used for the bioinformatic analyses in my Master's Thesis are provided. All bioinformatic analyses have been performed on the HPC RRZK CHEOPS of the Regional Computing Centre (RRZK) of the University of Cologne, if not noted otherwise. 
 
 Versions of implemented programs:
 ###Table
@@ -154,5 +154,25 @@ Versions of implemented programs:
 >
 ### 3. Mapping reads onto genome
 >
-> Indexing the genome using kallisto
+> Indexing the genome using kallisto. k-mer size is set 21 for small reads. 
+> 
 > ```kallisto index -i P_sambesii21.index -k 21 psambesii_genome.fasta.masked```
+> 
+> Mapping of each of the demultiplexed samples against the index. Only transcript read is mapped. -l flag describes size of library (200bp, as measured by femto pulse analysis), -s flag describes variation, set to 10 % of the size here. 
+> 
+> ```for f in ./Psam-1*sequences_pullseq.fq; do kallisto quant -i ./P_sambesii21.index --pseudobam -o $f.kallisto21 --single -l 200 -s 20 $f > $f.kallisto21.sam; done; for f in ./Psam-3*sequences_pullseq.fq; do kallisto quant -i ./P_sambesii21.index --pseudobam -o $f.kallisto21 --single -l 200 -s 20 $f > $f.kallisto21.sam; done; for f in ./Psam-4*sequences_pullseq.fq; do kallisto quant -i ./P_sambesii21.index --pseudobam -o $f.kallisto21 --single -l 200 -s 20 $f > $f.kallisto21.sam; done; for f in ./Psam-5*sequences_pullseq.fq; do kallisto quant -i ./P_sambesii21.index --pseudobam -o $f.kallisto21 --single -l 200 -s 20 $f > $f.kallisto21.sam; done```
+> 
+> ### 4. Sorting and indexing BAM files
+> 
+> Since all created kallisto subdirectories are named "pseudoalignments.bam", they were renamed and retrieved from the subdirectories. All mapping information is stored in the pseudobam files.
+> 
+> ```for f in *.bam; do samtools view -b $f > $f.view; done```
+> ```for f in *.view; do samtools sort $f -o $f.sorted.bam; done```
+> ```for f in *.sorted.bam; do samtools index $f; done```
+> 
+> The created .bai index files need to be in the same directory moving forward.
+>d
+> ### 5. UMI-tools deduplication
+
+
+
