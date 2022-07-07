@@ -1,5 +1,5 @@
 # **Naïra Sarkis/Master Thesis**
-In the following, further information on implemented tools and commands used in the bioinformatic analyses for my Master's Thesis is provided. All bioinformatic analyses have been performed performed on the HPC RRZK CHEOPS of the Regional Computing Centre (RRZK) of the University of Cologne, if not noted otherwise. 
+In the following, further information on implemented tools and commands used in the bioinformatic analyses for my Master's Thesis is provided. All bioinformatic analyses have been performed on the HPC RRZK CHEOPS of the Regional Computing Centre (RRZK) of the University of Cologne, if not noted otherwise. 
 
 Versions of implemented programs:
 ###Table
