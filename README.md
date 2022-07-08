@@ -5,12 +5,17 @@ Versions of implemented programs:
 ###Table
 ## 1. *P. sambesii* whole genome annotation
 ### 1.1 Obtaining RNA-seq data from NCBI and preparing read files
-> The NCBI-SRA-toolkit was used to download paired-end RNA-seq data for *Plectus sambesii* that has been generated before (###Ref)
 > 
-> ```fasterq-dump -S SRR8243961```
+> The NCBI-SRA-toolkit is used to download paired-end Illumina HiSeq RNA-Seq data of *Plectus sambesii* from NCBI's SRA (SRR8243961)
 > 
-> For better program compatibility, headers of read files were modified using sed command. Dots in headers were exchanged with underspace and everything starting from the first blank space in a line was deleted.
+> ```prefetch  SRR8243961```
 > 
+> ```fasterq-dump -S SRR8243961``` 
+> 
+> For better program compatibility, headers of read files are modified using sed command. Dots in headers are exchanged with underspace and everything starting from the first blank space in a line is deleted.
+> 
+> Note: This was done on a local computer and SRR8243961.tar.gz was scopied to CHEOPS.
+>
 ### 1.2 Masking the genome using repeatmodeler and repeatmasker
 > ```BuildDatabase -name ES601_gene_DB -engine ncbi psambesii_genome.fasta RepeatModeler -engine ncbi -pa 16 -database ES601_gene_DB```
 >
