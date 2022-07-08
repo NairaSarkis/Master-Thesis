@@ -244,23 +244,35 @@ Versions of implemented programs:
 > ```conda create -n r_4_1 -c conda-forge r-base=4.1* r-essentials```
 > 
 > ```conda activate r_4_1```
->
-> ```R
+> 
+> ```R```
+> 
 > ```if (!require("BiocManager", quietly =TRUE)) install.packages("BiocManager")```
+> 
 > ```BiocManager::install("SingleCellExperiment")```
+> 
 > ```BiocManager::install("scuttle")```
+> 
 > ```BiocManager::install("scater")```
+> 
 > ```BiocManager::install("edgeR")```
+> 
 > ```install.packages("Matrix")```
+> 
 > ```install.packages("dplyr")```
 >
 > Load required packages
 >
 > ```library(dplyr)```
+> 
 > ```library(Matrix)```
+> 
 > ```library(SingleCellExperiment)```
+> 
 > ```library(scuttle)```
+> 
 > ```library(scater)```
+> 
 > ```library(edgeR)```
 >
 > Create a character list of prepared UMI count files from within the directory using R
