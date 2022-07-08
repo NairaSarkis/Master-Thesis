@@ -31,10 +31,12 @@ Versions of implemented programs:
 > ```gmap_build -D /scratch/nsarkisk/Psam_annotation -d genome_index psambesii_genome.fasta.masked```
 > 
 > ```gsnap -D /scratch/nsarkisk/Psam_annotation -d genome_index -A sam -o /scratch/nsarkisk/Psam_annotation/psambesii-gsnap.sam SRR8243961_1.sednew.fastq SRR8243961_2.sednew.fastq```
+>
 ### 1.4 Gene predictions using the braker2 pipeline
+>
 > ```braker.pl --species=PlectusSambesii --softmasking --AUGUSTUS_CONFIG_PATH=/scratch/nsarkisk/Psam_annotation/augustus-config/ --genome=psambesii_genome.fasta.masked --bam=psambesii-gsnap.bam.sorted```
 > 
-> A gff3 file containing the annotation was obtained and a file containing all coding sequences (CDS).
+> A gff3 file containing the annotation is obtained and a file containing all coding sequences (CDS).
 
 ## 2. *P. sambesii* functional annotation 
 ### 2.1 Orthology Inference and hox gene analysis
@@ -51,10 +53,12 @@ Versions of implemented programs:
 > ```orthofinder -f Fasta_files/```
 > 
 2.1.2 Search orthogroups for hox genes
-> The braker CDS ouput file is translated in order to get a proteome file (###method) and a databank is generated from it using blast+. 
+>
+> The braker CDS ouput file had been translated using the python code python -m jcvi.formats.fasta beforehand to obtain a proteome file. A databank is generated from it using blast+.
 > 
 > ```makeblastdb -in psam_PB3_r3.braker3.fasta -dbtype prot -title Plectus-proteome```
-> Previously provided hox gene sequences (###ref) were blasted against the new proteome.
+> 
+> Hox gene sequences (provided by Dr. Philipp Schiffer) were blasted against the new proteome.
 > 
 > ```blastp -query hox-proteins-plectus.fasta -db psam_PB3_r3.braker3.fasta -evalue 1e-30 -max_target_seqs 5 -outfmt 6 -out blastp_hox_vs_proteome.csv```
 > 
