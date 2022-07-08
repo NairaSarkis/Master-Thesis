@@ -319,7 +319,10 @@ Versions of implemented programs:
 > ```nGenesrationUMI <- genecountsperembryo/UMIcountsperembryo``` Calculates ratio
 > 
 > ```write.csv(UMIcountsperembryo, "./UMIcountsperembryo.csv", row.names = TRUE)``` Writes .csv file
-
+> 
+### 7. QC of single embyro experiment
+> d 
+> 
 
 
 
