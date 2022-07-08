@@ -382,10 +382,48 @@ Versions of implemented programs:
 > ```UMI_tpm_log10_ordered <- UMI_tpm_log10_counts[,col_order]``` Reorders the columns of the entire table
 > 
 > ```write.csv(UMI_tpm_log10_ordered, "./UMI_tpm_log10_ordered.csv", row.names = TRUE)``` Save file with new order
-
-
-
-
-
-
-
+> 
+> ```install.packages("rgdal")```
+> 
+> ```install.packages("iemisc")```
+> 
+> Load the normalized expression matrix
+> 
+> ```normexp = read.delim("./UMI_tpm_log10_ordered1.csv", sep=",", header=TRUE)```
+> 
+> ```rownames(normexp) <- normexp[,1]``` Creates a file containing the rownames of the data frame
+> 
+> ```normexpmatrix <- normexp[,-1]``` Remove rownames from the dataframe to be able to convert it to a matrix
+> 
+> ```mat <- as.matrix(normexpmatrix)``` Convert to a matrix
+> 
+> Zavit code (received from Gustavo Starvaggi Franco) is used with this matrix in R
+> 
+> ```exp_tpm_scale = t(scale(t(mat)))
+exp_tpm_pca = princomp(exp_tpm_scale, cor=F)
+X = exp_tpm_pca$scores[, c("Comp.1")]
+Y = exp_tpm_pca$scores[, c("Comp.2")]
+library("iemisc")
+t = atan2d(X, Y)
+t_ordered = sort(t, decreasing = T)
+exp_tpm_ord = mat[names(t_ordered), ]```
+> 
+> ```write.csv(exp_tpm_ord, "./exp_tpm_ord.csv", row.names = TRUE)``` Create a file with the new gene order
+> 
+> Create a heatmap from the same R session
+> 
+> ```library(ggplot2)```
+> 
+> ```library(reshape2)```
+> 
+> ```df <- read.csv("exp_tpm_ord.csv")```
+> 
+> ```dfmelt <- melt(df)``` Restructures the data, so that ggplot can use it
+> 
+> ```heatmapdf <- ggplot(dfmelt, aes(x = variable, y = X, fill = value)) + geom_tile() + scale_fill_gradient(high = "red", low = "blue")``` Creates heatmap
+> 
+> ```pdf("heatmapdf.pdf")``` Creates a PDF file
+> 
+> ```print(heatmapdf)``` Prints the heatmap to the PDF file
+> 
+> ```dev.off()``` This closes the PDF file
