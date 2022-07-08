@@ -43,7 +43,7 @@ Versions of implemented programs:
 ## 2. *P. sambesii* functional annotation 
 ### 2.1 Orthology Inference and hox gene analysis
 
-2.1.1 OrthoFinder Analysis
+### 2.1.1 OrthoFinder Analysis
 > 
 > The annotation gff3 file from the braker output is converted into the right gff3 format using agat
 > 
@@ -55,7 +55,7 @@ Versions of implemented programs:
 > 
 > ```orthofinder -f Fasta_files/```
 > 
-2.1.2 Search orthogroups for hox genes
+### 2.1.2 Search orthogroups for hox genes
 >
 > The braker CDS ouput file had been translated using the python code python -m jcvi.formats.fasta beforehand to obtain a proteome file. A databank is generated from it using blast+.
 > 
