@@ -36,7 +36,7 @@ Versions of implemented programs:
 > ```agat_sp_extract_sequences.pl -g longest.gff3 -f psam-genome_folded.fasta -o longest.fa -p```
 > 
 > Headers were changed to "PLESAM|ID" using sed command.
-> Directory "Fasta_files" is created and contains proteosome fasta files from ###SPECIES and Plectus sambesii proteome from braker2 output.
+> Directory "Fasta_files" is created and contains Plectus sambesii proteome from braker2 output and proteosome fasta files from species described in Material & Methods.
 > 
 > ```orthofinder -f Fasta_files/```
 > 
