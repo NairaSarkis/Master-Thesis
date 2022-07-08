@@ -133,7 +133,8 @@ Versions of implemented programs:
 > We are sorting the bases at positions 0-6 (UMIs have been extracted). The programme, by default, allows for one mismatch.
 > 
 > The 24 barcodes that were used are written into an Excel file and saved as tab delimited .txt file and renamed with suffix .tsv
-> --------------------------------------------------TABLE------------------------------
+> [Barcodes](https://user-images.githubusercontent.com/104494962/177957129-58f7e0f9-d799-4981-88a7-6e7a1bfc2f9a.png)
+
 > The forward paired reads are used and sorted into files according to the embryo sample they came from by using the barcodes.
 > 
 > ```demultiplex demux -r -s 1 -e 6 barcodes24.tsv Psam-1_fastp_forward_paired_umiext.fq```
