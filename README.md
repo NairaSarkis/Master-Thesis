@@ -222,6 +222,56 @@ Versions of implemented programs:
 > ```mkdir counts```
 > 
 > ```for f in *.swapped.tsv; do sed 's/\s/\t/g' $f > ./counts/$f.tabs.tsv; done```
+> 
+> Rename all files in the directory to this form: Lib-1.Celseq1.tsv
+>
+> ```rename 's/_fastp_forward_paired_umiext_/./' *.tsv```
+> 
+> ```rename 's/.fq.list.fixedlist.2.sequences_pullseq.fq.kallisto21.bam.view.sorted.bam.deduplicated.bam.featureCounts.bam.assigned_sorted.bam.counts.tsv.genes.tsv.sorted_counted.tsv.swapped.tsv.tabs.tsv/.tsv/' *.tsv```
+> 
+> Delete all header lines
+>
+> ```for f in *.tsv; do sed -i 1d $f; done```
+>
+> Show and remove completely empty files and move only final counts to a new directory
+>
+> ```find . -type f -empty -print -delete```
+>
+> ```mv *.tsv ./new_directory/```
+>
+> Create a conda environment with R version 4.1 and install R packages
+> 
+> ```conda create -n r_4_1 -c conda-forge r-base=4.1* r-essentials```
+> 
+> ```conda activate r_4_1```
+>
+> ```R
+if (!require("BiocManager", quietly =TRUE)) install.packages("BiocManager")
+BiocManager::install("SingleCellExperiment")
+BiocManager::install("scuttle")
+BiocManager::install("scater")
+BiocManager::install("edgeR")
+install.packages("Matrix")
+install.packages("dplyr")```
+>
+> Load required packages
+>
+> ```library(dplyr)
+library(Matrix)
+library(SingleCellExperiment)
+library(scuttle)
+library(scater)
+library(edgeR)```
+>
+> Create a character list of prepared UMI count files from within the directory using R
+>
+> ```files <- list.files()``` Creates vector from list of file names in the working directory
+> 
+> ```UMI_counts <- readDGE(files)``` Reads and stores the data from all files stored in file vector in UMI_counts
+>
+> ```ountData <- as.data.frame(UMI_counts$counts)``` Creates count matrix
+
+
 
 
 
