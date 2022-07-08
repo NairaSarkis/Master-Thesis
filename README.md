@@ -246,22 +246,22 @@ Versions of implemented programs:
 > ```conda activate r_4_1```
 >
 > ```R
-if (!require("BiocManager", quietly =TRUE)) install.packages("BiocManager")
-BiocManager::install("SingleCellExperiment")
-BiocManager::install("scuttle")
-BiocManager::install("scater")
-BiocManager::install("edgeR")
-install.packages("Matrix")
-install.packages("dplyr")```
+> ```if (!require("BiocManager", quietly =TRUE)) install.packages("BiocManager")```
+> ```BiocManager::install("SingleCellExperiment")```
+> ```BiocManager::install("scuttle")```
+> ```BiocManager::install("scater")```
+> ```BiocManager::install("edgeR")```
+> ```install.packages("Matrix")```
+> ```install.packages("dplyr")```
 >
 > Load required packages
 >
-> ```library(dplyr)
-library(Matrix)
-library(SingleCellExperiment)
-library(scuttle)
-library(scater)
-library(edgeR)```
+> ```library(dplyr)```
+> ```library(Matrix)```
+> ```library(SingleCellExperiment)```
+> ```library(scuttle)```
+> ```library(scater)```
+> ```library(edgeR)```
 >
 > Create a character list of prepared UMI count files from within the directory using R
 >
@@ -270,6 +270,46 @@ library(edgeR)```
 > ```UMI_counts <- readDGE(files)``` Reads and stores the data from all files stored in file vector in UMI_counts
 >
 > ```ountData <- as.data.frame(UMI_counts$counts)``` Creates count matrix
+> 
+> ```write.csv(countData, "./UMI_counts.csv", row.names = TRUE)``` Write count matrix to .csv file
+>
+> ```data = read.delim("./UMI_counts.csv", sep=",", header=TRUE)``` Read in the data from the file as a data frame
+> 
+> ```data[1:5,1:5]``` Check first 5 rows and columns of the dataframe
+> 
+> ```dim(data)``` Check dimensions of the data frame
+> 
+> ```rownames(data) <- data[,1]``` Set rownames to the first column
+> 
+> ```countsmatrix <- data[,-1]``` Remove the first column, as the names are now stored in rownames(data). The dataframe is now numeric and can be transformed into a matrix
+> 
+> ```options(stringsAsFactors = FALSE)``` Global default setting changed; every dataframe created hereafter will not auto-convert to factors unless explicitly told to do so
+> 
+> ```umi <- SingleCellExperiment(assays=list(counts=as.matrix(countsmatrix)))``` Creates sce object (S4 class for storing data from single-cell experiments. This object can be used by the package scater for conversion, QC, and normalisation
+> 
+> ```umi <- umi[, colSums(counts(umi)) > 0]``` Spots with non-positive counts are removed
+> 
+> ```tpm(umi) <- calculateTPM(umi, length=NULL, assay.type="counts", exprs_values=NULL)``` Conversion of counts to TPM (scuttle function), length set to NULL for UMI counts
+> 
+> ```tpm(umi)[1:5,1:5]``` Check first 5 rows and columns
+> 
+> ```normcounts(umi) = log10(tpm(umi)+1)``` log10 normalisation (+1 added to not have null values; cannot be log transformed)
+> 
+> ```write.csv(normcounts(umi), "./UMI_tpm_log10.csv", row.names = TRUE)``` Save as UMI_tpm_log10.csv file
+> 
+> ```keep_feature <- rowSums(normcounts(umi) > 0) > 0```
+> 
+> ```umi2 <- normcounts(umi)[keep_feature, ]``` All entries with just zeros are removed
+> 
+> ```UMIcountsperembryo <- colSums(umi2)``` Sums together all counts in each column
+> 
+> ```genecountsperembryo <- colSums(umi2 !=0)``` Sums together all fields in each column that are not 0
+> 
+> ```nGenesrationUMI <- genecountsperembryo/UMIcountsperembryo``` Calculates ratio
+> 
+> ```write.csv(UMIcountsperembryo, "./UMIcountsperembryo.csv", row.names = TRUE)``` Writes .csv file
+
+
 
 
 
