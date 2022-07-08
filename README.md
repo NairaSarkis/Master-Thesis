@@ -172,8 +172,56 @@ Versions of implemented programs:
 > ```for f in *.sorted.bam; do samtools index $f; done```
 > 
 > The created .bai index files need to be in the same directory moving forward.
->d
+>
 > ### 5. UMI-tools deduplication
+> 
+> Create a list of files
+> 
+> ```find ./*kallisto21.bam.view.sorted.bam > kallisto21_sorted_bam_list```
+> 
+> Deduplication using umi_tools
+> 
+> ```cat kallisto21_sorted_bam_list | parallel -j 12 umi_tools dedup -I {} --output-stats={}.deduplicated -S {}.deduplicated.bam```
+> 
+> ### 6. Create expression matrix from UMI counts
+> 
+> Create a .gtf file from the .gff3 annotation file
+> 
+> ```agat_convert_sp_gff2gtf.pl --gff psam_PB3_r3.braker.gff3 -o reference_genome_annotation.gtf```
+> 
+> Assign reads to genes using featureCounts from Subread package
+> 
+> ```for f in *deduplicated.bam; do featureCounts -a reference_genome_annotation.gtf -o $f.genes_assigned -R BAM $f -T 4; done```
+> 
+> Use samtools to sort and index
+> 
+> ```for f in *.bam.featureCounts.bam; do samtools sort $f -o $f.assigned_sorted.bam; done```
+> 
+> ```for f in *.assigned_sorted.bam; do samtools index $f; done```
+> 
+> Count genes using umi_tools and unzip all
+> 
+> ```for f in *.assigned_sorted.bam; do umi_tools count --per-gene --gene-tag=XT --assigned-status-tag=XS --per-cell -I $f -S $f.counts.tsv.gz; done```
+> 
+> ```gunzip *.counts.tsv.gz```
+> 
+> Counts were made for cells, but each sample was for one embryo, so the full counts per embryo are needed. Start with only extracting the first line with the repeating gene names
+> 
+> ```for f in *.counts.tsv; do awk '{print $1}' $f > $f.genes.tsv; done```
+> 
+> Sort the gene names, only keep the unique ones and count the occurrences
+>
+> ```for f in *.counts.tsv.genes.tsv; do sort $f | uniq -c > $f.sorted_counted.tsv; done```
+> 
+> Files have counts in the first column and genes names in the second column. Swap the two columns
+> 
+> ```for f in *.sorted_counted.tsv; do awk '{t=$1; $1 =$2; $2=t;print;}' $f > $f.swapped.tsv; done```
+> 
+> Create new directory to store all count files and replace all spaced in the files with tabs
+> 
+> ```mkdir counts```
+> 
+> ```for f in *.swapped.tsv; do sed 's/\s/\t/g' $f > ./counts/$f.tabs.tsv; done```
 
 
 
