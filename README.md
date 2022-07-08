@@ -399,14 +399,14 @@ Versions of implemented programs:
 > 
 > Zavit code (received from Gustavo Starvaggi Franco) is used with this matrix in R
 > 
-> ```exp_tpm_scale = t(scale(t(mat)))
-> exp_tpm_pca = princomp(exp_tpm_scale, cor=F)
-> X = exp_tpm_pca$scores[, c("Comp.1")]
-> Y = exp_tpm_pca$scores[, c("Comp.2")]
-> library("iemisc")
-> t = atan2d(X, Y)
-> t_ordered = sort(t, decreasing = T)
-> exp_tpm_ord = mat[names(t_ordered), ]```
+> ```exp_tpm_scale = t(scale(t(mat)))```
+> ```exp_tpm_pca = princomp(exp_tpm_scale, cor=F)```
+> ```X = exp_tpm_pca$scores[, c("Comp.1")]```
+> ```Y = exp_tpm_pca$scores[, c("Comp.2")]```
+> ```library("iemisc")```
+> ```t = atan2d(X, Y)```
+> ```t_ordered = sort(t, decreasing = T)```
+> ```exp_tpm_ord = mat[names(t_ordered), ]```
 > 
 > ```write.csv(exp_tpm_ord, "./exp_tpm_ord.csv", row.names = TRUE)``` Create a file with the new gene order
 > 
