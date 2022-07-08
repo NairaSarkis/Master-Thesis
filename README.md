@@ -119,8 +119,6 @@ Versions of implemented programs:
 >
 > 1.4. Removing low complexity reads
 >
-> Complexity describes the percentage of base that is different from its next base. The complexity filter default value is 30, which means 30 % complexity is required, to keep the reads. (###SOURCE?)
->
 > ```fastp -i Psam-1_fastp_adapter_fasta_polyg3_polyx_min36_reverse_paired.fq.gz -o Psam-1_fastp_adapter_fasta_polyg3_polyx_min36_minlowcomplexity_reverse_paired.fq.gz -l 36 -y -p -j Psam-1_fastp_adapter_fasta_polyg3_polyx_min36_minlowcomplexity_reverse_paired.json -h Psam-1_fastp_adapter_fasta_polyg3_polyx_min36_minlowcomplexity_reverse_paired.html```
 >
 > 1.5. Removing reads with 15xA bases using bbduk
@@ -144,6 +142,7 @@ Versions of implemented programs:
 > ```pullseq -i Psam-1_fastp_adapter_fasta_polyg3_polyx_min12_reverse_paired.fq -n Psam-1_final_bbduk_reverse_paired_headers > Psam-1_final_bbduk_reverse_paired.fq```
 >
 ### 2. Extract UMIs from all forward reads and write into header of both forward and reverse reads
+>
 > ```umi_tools extract -I Psam-1_fastp_forward_paired.fq --bc-pattern=NNNNNN --read2-in=Psam-1_fastp_reverse_paired.fq --stdout=Psam-1_fastp_forward_paired_umiext.fq --read2-out=Psam-1_fastp_reverse_paired_umiext.fq```
 >
 > Run demultiplex to sort the 12 bases forward fastq reads into separate files according to their Celseq2 barcode.
@@ -181,7 +180,7 @@ Versions of implemented programs:
 > 
 ### 4. Sorting and indexing BAM files
 > 
-> Since all created kallisto subdirectories are named "pseudoalignments.bam", they were renamed and retrieved from the subdirectories. All mapping information is stored in the pseudobam files.
+> Since all created kallisto subdirectories are named "pseudoalignments.bam", they are renamed and retrieved from the subdirectories. All mapping information is stored in the pseudobam files.
 > 
 > ```for f in *.bam; do samtools view -b $f > $f.view; done```
 > ```for f in *.view; do samtools sort $f -o $f.sorted.bam; done```
