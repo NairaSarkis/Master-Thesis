@@ -108,6 +108,9 @@ Versions of implemented programs:
 > ```cat Psam*.fa.tsv > interproscan-final.fa.tsv```
 
 ## 3. CEL-Seq2 pipeline
+>
+> This pipeline used process the sequencing results from CEL-Seq2 was developed by Dr. Tarja Hoffmeyer of the worm~lab, Cologne.
+>
 ### 1. Removing adapters and quality control
 >
 > Create seperate fasta files with known adapters that can be looked up in the fastp known adapters file (https://github.com/OpenGene/fastp/blob/master/src/knownadapters.h).
