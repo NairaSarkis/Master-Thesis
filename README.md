@@ -163,7 +163,7 @@ Versions of implemented programs:
 > 
 > ```for f in ./Psam-1*sequences_pullseq.fq; do kallisto quant -i ./P_sambesii21.index --pseudobam -o $f.kallisto21 --single -l 200 -s 20 $f > $f.kallisto21.sam; done; for f in ./Psam-3*sequences_pullseq.fq; do kallisto quant -i ./P_sambesii21.index --pseudobam -o $f.kallisto21 --single -l 200 -s 20 $f > $f.kallisto21.sam; done; for f in ./Psam-4*sequences_pullseq.fq; do kallisto quant -i ./P_sambesii21.index --pseudobam -o $f.kallisto21 --single -l 200 -s 20 $f > $f.kallisto21.sam; done; for f in ./Psam-5*sequences_pullseq.fq; do kallisto quant -i ./P_sambesii21.index --pseudobam -o $f.kallisto21 --single -l 200 -s 20 $f > $f.kallisto21.sam; done```
 > 
-> ### 4. Sorting and indexing BAM files
+### 4. Sorting and indexing BAM files
 > 
 > Since all created kallisto subdirectories are named "pseudoalignments.bam", they were renamed and retrieved from the subdirectories. All mapping information is stored in the pseudobam files.
 > 
@@ -173,7 +173,7 @@ Versions of implemented programs:
 > 
 > The created .bai index files need to be in the same directory moving forward.
 >
-> ### 5. UMI-tools deduplication
+### 5. UMI-tools deduplication
 > 
 > Create a list of files
 > 
