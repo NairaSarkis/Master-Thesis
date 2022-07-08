@@ -12,7 +12,7 @@ Versions of implemented programs:
 > 
 > ```fasterq-dump -S SRR8243961``` 
 > 
-> For better program compatibility, headers of read files are modified using sed command. Dots in headers are exchanged with underspace and everything starting from the first blank space in a line is deleted.
+> For better program compatibility, headers of read files are modified using sed command. Dots in headers are exchanged with underspace and everything starting from the first blank space in a line is deleted
 > 
 > ```tar -zcvf SRR8243961.tar.gz```
 > 
@@ -27,7 +27,9 @@ Versions of implemented programs:
 > ```RepeatClassifier -consensi ES601_gene_DB-families.fa```
 >
 > ```RepeatMasker -pa 16 -e ncbi -lib ES601_gene_DB-families.fa.classified psambesii_genome.fasta```
+> 
 ### 1.3 Indexing genome and aligning reads using gmap/gsnap
+>
 > ```gmap_build -D /scratch/nsarkisk/Psam_annotation -d genome_index psambesii_genome.fasta.masked```
 > 
 > ```gsnap -D /scratch/nsarkisk/Psam_annotation -d genome_index -A sam -o /scratch/nsarkisk/Psam_annotation/psambesii-gsnap.sam SRR8243961_1.sednew.fastq SRR8243961_2.sednew.fastq```
@@ -36,7 +38,7 @@ Versions of implemented programs:
 >
 > ```braker.pl --species=PlectusSambesii --softmasking --AUGUSTUS_CONFIG_PATH=/scratch/nsarkisk/Psam_annotation/augustus-config/ --genome=psambesii_genome.fasta.masked --bam=psambesii-gsnap.bam.sorted```
 > 
-> A gff3 file containing the annotation is obtained and a file containing all coding sequences (CDS).
+> A gff3 file containing the annotation is obtained and a file containing all coding sequences (CDS)
 
 ## 2. *P. sambesii* functional annotation 
 ### 2.1 Orthology Inference and hox gene analysis
@@ -47,8 +49,9 @@ Versions of implemented programs:
 > 
 > ```agat_sp_extract_sequences.pl -g longest.gff3 -f psam-genome_folded.fasta -o longest.fa -p```
 > 
-> Headers were changed to "PLESAM|ID" using sed command.
-> Directory "Fasta_files" is created and contains Plectus sambesii proteome from braker2 output and proteosome fasta files from species described in Material & Methods.
+> Headers are changed to "PLESAM|ID" using sed command
+> 
+> Directory "Fasta_files" is created and contains *Plectus sambesii* proteome from braker2 output and proteosome fasta files from species described in Material & Methods.
 > 
 > ```orthofinder -f Fasta_files/```
 > 
@@ -62,7 +65,7 @@ Versions of implemented programs:
 > 
 > ```blastp -query hox-proteins-plectus.fasta -db psam_PB3_r3.braker3.fasta -evalue 1e-30 -max_target_seqs 5 -outfmt 6 -out blastp_hox_vs_proteome.csv```
 > 
-> The output csv file contains hox genes as query and corresponding target sequence IDs in new *P. sambesii* proteome. Target sequence IDs are then used to find hox proteins in contigs of new annotation gff3 file. 
+> The output csv file contains hox genes as query and corresponding target sequence IDs in new *P. sambesii* proteome. Target sequence IDs are then used to find hox proteins in contigs of new annotation gff3 file
 >
 > ```grep '>target-sequenceID<' psam_PB3_r3.braker.gff3 > hox_'target-sequenceID'```
 >
@@ -70,19 +73,20 @@ Versions of implemented programs:
 > Expl.: ```grep "g6951.t1" Orthogroups.txt > hox-g6951.t1```
 > 
 > OrthoFinder creates a directory "Orthogroup_Sequences" by default, containing amino acid fasta sequences of all genes within each orthogroup. Fasta files matching respective Hox IDs are stored in new directories.
-> Orthogroup fasta files to each hox protein are aligned using mafft.
+> 
+> Orthogroup fasta files to each hox protein are aligned using mafft
 > 
 > ```mafft --localpair --maxiterate 1000 OG0000191.fa > OG0000191.fa.aln```
 > 
-> Spurious sequences are removed using trimal.
+> Spurious sequences are removed using trimal
 > 
 > ```trimal -in OG0007202.fa.aln -out OG0007202.fa.aln.less.clw -resoverlap 0.75 -seqoverlap 80 -clustal```
 > 
-> Regions that do not align well are removed automatically.
+> Regions that do not align well are removed automatically
 >
 > ```trimal -in OG0000191b.fa.aln -out OG0000191b.fa.aln.clean.clw -automated1 -clustal```
 > 
-> Maximum likelihood phylogenic trees are generated using iqtree.
+> Maximum likelihood phylogenic trees are generated using iqtree
 > 
 > ```iqtree2 -s OG0016393.fa.aln.clean.clw -m TEST -bb 1000 -nt AUTO```
 
