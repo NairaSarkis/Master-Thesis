@@ -339,12 +339,49 @@ Versions of implemented programs:
 > Check for the line containing the string ">contig_3238" and copy this and the next line containing the sequence into a new file
 > 
 > ```grep -A 1 ">contig_3238" raw_genome_assembly_minus_new_lines.fasta > contig3238.fasta```
-> d
+> 
 > Confirm the identity of the mitochondrial contig by perfomring a BLAST search against the NCBI nt database
-> s
+> 
 > MITOS (http://mitos.bioinf.uni-leipzig.de/) is used to annotate the mitochondrial contig. An .gff annotation file is created and shows all regions present in the mitochondrial contig.
 > 
-
+> In order to retrieve the mitochondrial UMI counts, mapping and featureCounts is repeated as described before for the mitochondrial contig. For featureCounts of the mitochondrial counts the -t and -g flag has to be added.
+> 
+> ```for f in *deduplicated.sorted.bam; do featureCounts -a Consensusmito.gtf -o $f.genes_assigned -t gene -g gene_id -R BAM $f -T 4; done```
+> 
+> Create a table in Microsoft Excel in this format:
+> Embryo   nUMI  nGenes  nUMI/nGenes  mito UMI fraction
+> 
+### 8. Sorting of gene expression and heatmap creation
+> 
+> Same R environment is used as above
+> 
+> ```conda activate r_4_1```
+> 
+> ```R```
+> 
+> ```library(dplyr)```
+> 
+> ```library(Matrix)```
+> 
+> ```library(SingleCellExperiment)```
+> 
+> ```library(scuttle)```
+>
+> ```library(scater)```
+>
+> ```library(edgeR)```
+> 
+> ```UMI_tpm_log10 = read.delim("./UMI_tpm_log10.csv", sep=",", header=TRUE)```
+> 
+> ```rownames(UMI_tpm_log10) <- UMI_tpm_log10[,1]``` Determine rownames
+> 
+> ```UMI_tpm_log10_counts <- UMI_tpm_log10[,-1]``` Remove column containing rownames as they are stored anyway
+> 
+> ```col_order = c("Psam.3_Celseq1", "Psam.1_Celseq17", "Psam.1_Celseq1", "Psam.3_Celseq80", "Psam.3_Celseq31", "Psam.5_Celseq26", "Psam.1_Celseq80", "Psam.4_Celseq24", "Psam.3_Celseq77", "Psam.4_Celseq74", "Psam.1_Celseq50", "Psam.4_Celseq44", "Psam.3_Celseq63", "Psam.3_Celseq74", "Psam.1_Celseq68", "Psam.5_Celseq17", "Psam.5_Celseq55", "Psam.5_Celseq23", "Psam.1_Celseq26", "Psam.4_Celseq96", "Psam.4_Celseq10", "Psam.4_Celseq9", "Psam.1_Celseq5", "Psam.1_Celseq6", "Psam.1_Celseq44", "Psam.5_Celseq1", "Psam.3_Celseq6", "Psam.1_Celseq31", "Psam.5_Celseq80", "Psam.5_Celseq24", "Psam.4_Celseq1", "Psam.4_Celseq36", "Psam.5_Celseq63", "Psam.3_Celseq17", "Psam.4_Celseq89", "Psam.1_Celseq89", "Psam.4_Celseq4", "Psam.5_Celseq4", "Psam.4_Celseq6", "Psam.3_Celseq4", "Psam.3_Celseq9", "Psam.5_Celseq68", "Psam.3_Celseq68", "Psam.4_Celseq50", "Psam.1_Celseq10", "Psam.1_Celseq23", "Psam.1_Celseq55", "Psam.4_Celseq46", "Psam.5_Celseq36", "Psam.5_Celseq10", "Psam.3_Celseq89", "Psam.3_Celseq50", "Psam.5_Celseq74", "Psam.3_Celseq10", "Psam.3_Celseq25", "Psam.5_Celseq50", "Psam.5_Celseq89", "Psam.3_Celseq26", "Psam.4_Celseq68", "Psam.3_Celseq23", "Psam.3_Celseq5", "Psam.1_Celseq36", "Psam.1_Celseq74", "Psam.4_Celseq26", "Psam.3_Celseq55", "Psam.4_Celseq5", "Psam.5_Celseq46", "Psam.1_Celseq24", "Psam.5_Celseq25", "Psam.5_Celseq77", "Psam.3_Celseq24", "Psam.4_Celseq80", "Psam.4_Celseq77", "Psam.4_Celseq17", "Psam.1_Celseq25", "Psam.5_Celseq44", "Psam.3_Celseq44", "Psam.1_Celseq4", "Psam.1_Celseq77", "Psam.1_Celseq63", "Psam.3_Celseq36", "Psam.1_Celseq46", "Psam.1_Celseq9", "Psam.5_Celseq5", "Psam.3_Celseq46", "Psam.4_Celseq23", "Psam.5_Celseq96", "Psam.5_Celseq6", "Psam.5_Celseq31", "Psam.5_Celseq9", "Psam.4_Celseq25", "Psam.3_Celseq96", "Psam.4_Celseq63", "Psam.4_Celseq31", "Psam.4_Celseq55")```
+> 
+> ```UMI_tpm_log10_ordered <- UMI_tpm_log10_counts[,col_order]``` Reorders the columns of the entire table
+> 
+> ```write.csv(UMI_tpm_log10_ordered, "./UMI_tpm_log10_ordered.csv", row.names = TRUE)``` Save file with new order
 
 
 
