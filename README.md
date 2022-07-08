@@ -92,22 +92,21 @@ Versions of implemented programs:
 
 ### 2.2 Interproscan analysis
 
-> The P. sambesii proteome file (from braker2) was split into 37 files using faSplit in order to run InterProscan with smaller files.
+> The *P. sambesii* proteome file (from braker2) is split into 37 files using faSplit in order to run InterProscan with smaller files.
 > 
 > ```faSplit sequence psam_PB3_r3.braker3.aa 37 Psam```
 > 
-> ```for f in Psam*.fa; do /my_interproscan/interproscan-5.55-88.0/interproscan.sh -i $f -f tsv --goterms --pathways; done```
+> InterproScan analysis is run for all chunked files.
+> 
+> ```singularity exec -B /home/nsarkisk/Psam_Interproscan_input/ -B /scratch/nsarkisk/Psam_interproscan_output/ -B /scratch/nsarkisk/interproscan-tmp/ /opt/rrzk/software/singularity_images/interproscan_latest.sif interproscan.sh -dp -T /scratch/nsarkisk/interproscan-tmp/ -goterms -i /home/nsarkisk/Psam_Interproscan_input/Psam01.fa -d /scratch/nsarkisk/Psam_interproscan_output/```
 > 
 > Chunked Interproscan results were combined to one tsv file.
 > 
 > ```cat Psam*.fa.tsv > interproscan-final.fa.tsv```
 
-## 3. CEL-Seq2 pipeline 
-
-### Tools implemented in this analysis:
-
-> ###Table of versions
+## 3. CEL-Seq2 pipeline
 ### 1. Removing adapters and quality control
+>
 > 1.1. Create seperate fasta files with known adapters for each Library in this format: ![Psam_adapters](https://user-images.githubusercontent.com/104494962/177975386-41e916b1-57fe-4c07-ad79-82997981312c.png)
 > 
 > 1.2. Adapters are removed according to defined adapters in fasta files, followed by quality control
