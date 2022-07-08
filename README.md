@@ -118,7 +118,7 @@ Versions of implemented programs:
 >
 > ```zcat Psam-1_fastp_adapter_fasta_polyg3_polyx_min36_minlowcomplexity_bbduk_minuspolyA_k15_hdist0_reverse_paired.fq.gz | sed -n '1~4p' | sed 's/\s.*$//' | sed 's/^@//g' > Psam-1_final_bbduk_reverse_paired_headers```
 >
-> 1.8. Pull sequences from reverse paired file of the forward paired file into a new file using pullseq
+> 1.8. Pull sequences from reverse paired file of the forward paired file into a new file using pullseq 
 >
 > ```pullseq -i Psam-1_fastp_adapter_fasta_polyg3_polyx_min12_forward_paired.fq -n Psam-1_final_bbduk_reverse_paired_headers > Psam-1_final_bbduk_forward_paired.fq```
 >
