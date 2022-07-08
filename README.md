@@ -90,7 +90,7 @@ Versions of implemented programs:
 
 > ###Table of versions
 ### 1. Removing adapters and quality control
-> 1.1. Create fasta files with known adapters
+> 1.1. Create seperate fasta files with known adapters for each Library in this format: ![Psam_adapters](https://user-images.githubusercontent.com/104494962/177975386-41e916b1-57fe-4c07-ad79-82997981312c.png)
 > 
 > 1.2. Adapters are removed according to defined adapters in fasta files, followed by quality control
 > 
