@@ -110,9 +110,7 @@ Versions of implemented programs:
 ## 3. CEL-Seq2 pipeline
 ### 1. Removing adapters and quality control
 >
-### 1.1. Create seperate fasta files with known adapters
->
-> Known adapters can be looked up in the fastp known adapters file (https://github.com/OpenGene/fastp/blob/master/src/knownadapters.h).
+> Create seperate fasta files with known adapters that can be looked up in the fastp known adapters file (https://github.com/OpenGene/fastp/blob/master/src/knownadapters.h).
 > 
 > Create seperate fasta files for each Library in this format:
 >
@@ -120,33 +118,27 @@ Versions of implemented programs:
 > 
 > RP1 is the universal adapter for small RNA Illumina libraries and RPI2, RP9, RPI10, RPI11 are the indexed adapters, respectively.
 >
-### 1.2. Remove adapters and quality control
->
-> Adapters are removed according to defined adapters in fasta files, followed by quality control.
+> Adapters are removed according to defined adapters in fasta files, followed by quality control
 > 
 > ```fastp -i Psam-1_1.fq.gz -I Psam-1_2.fq.gz -o Psam-1_fastp_adapter_fasta_polyg3_polyx_min12_forward_paired.fq.gz -O Psam-1_fastp_adapter_fasta_polyg3_polyx_min12_reverse_paired.fq.gz --unpaired1 Psam-1_fastp_adapter_fasta_polyg3_polyx_min12_forward_unpaired.fq.gz --unpaired2 Psam-1_fastp_adapter_fasta_polyg3_polyx_min12_reverse_unpaired.fq.gz -g --poly_g_min_len 3 -x -l 12 --adapter_fasta adapters_Psam-1.fa --cut_front --cut_front_mean_quality 3 --cut_tail --cut_tail_mean_quality 3 --cut_right --cut_right_mean_quality 15 -p -j Psam-1_fastp_adapter_fasta_polyg3_polyx_min12.json -h Psam-1_fastp_adapter_fasta_polyg3_polyx_min12.html```
 >
-> In NextSeq, a polyG tail often occurs at the end of reads as unreadable bases are read as G. -g flag these if least three Gs in a row are present. Other poly tails are removed with -x option. Reads with less than 12 bases are removed with option -l 12. Bad quality front and tail areas are removed. The option --cut_right is a sliding window function that removes very low quality regions in the middle areas. Overrpresented read analysis in performed with -p flag. -json and -html outputs are created.
+> In NextSeq, a polyG tail often occurs at the end of reads as unreadable bases are read as G. -g flag these if least three Gs in a row are present. Other poly tails are removed with -x option. Reads with less than 12 bases are removed with option -l 12. Bad quality front and tail areas are removed. The option --cut_right is a sliding window function that removes very low quality regions in the middle areas. Overrpresented read analysis in performed with -p flag. -json and -html outputs are created. A minimum length of 12 is given for trimming to remove reads only containing UMI and barcode.
 >
-### 1.3. Reads shorter than 36 bases are removed from reverse paired reads
+> Reads shorter than 36 bases are removed from reverse paired reads
 > 
 > ```fastp -i Psam-1_fastp_adapter_fasta_polyg3_polyx_min12_reverse_paired.fq.gz -o Psam-1_fastp_adapter_fasta_polyg3_polyx_min36_reverse_paired.fq.gz -l 36 -p -j Psam-1_fastp_adapter_fasta_polyg3_polyx_min36_reverse_paired.json -h Psam-1_fastp_adapter_fasta_polyg3_polyx_min36_reverse_paired.html```
 >
-### 1.4. Removing low complexity reads
+> Removing low complexity reads (default complexity level)  
 >
 > ```fastp -i Psam-1_fastp_adapter_fasta_polyg3_polyx_min36_reverse_paired.fq.gz -o Psam-1_fastp_adapter_fasta_polyg3_polyx_min36_minlowcomplexity_reverse_paired.fq.gz -l 36 -y -p -j Psam-1_fastp_adapter_fasta_polyg3_polyx_min36_minlowcomplexity_reverse_paired.json -h Psam-1_fastp_adapter_fasta_polyg3_polyx_min36_minlowcomplexity_reverse_paired.html```
 >
-### 1.5. Removing reads with 15xA bases using bbduk
+> Removing reads with 15xA bases using bbduk
 >
 > ```bbduk.sh k=15 in=Psam-1_fastp_adapter_fasta_polyg3_polyx_min36_minlowcomplexity_reverse_paired.fq.gz out=Psam-1_fastp_adapter_fasta_polyg3_polyx_min36_minlowcomplexity_bbduk_minuspolyA_k15_hdist0_reverse_paired.fq.gz outm=Psam-1_fastp_adapter_fasta_polyg3_polyx_min36_minlowcomplexity_bbduk_onlypolyA_k15_hdist0_reverse_paired.fq.gz literal=AAAAAAAAAAAAAAA hammingdistance=0```
 >
-### 1.6. Remaining reverse reads are paired with forward reads again
+> Remaining reverse reads are paired with forward reads and forward reads without pair are removed. A file with the fraction of the headers of the reverse paired file that can also be found in the corresponding headers of the forward read file is prepared for all libraries.
 >
-> Forward reads that are missing are removed. 
->
-### 1.7. Create a file, that contains a fraction of headers of the reverse paired file, that can also be found in the corresponding headers of forward read files
->
-> ```zcat Psam-1_fastp_adapter_fasta_polyg3_polyx_min36_minlowcomplexity_bbduk_minuspolyA_k15_hdist0_reverse_paired.fq.gz | sed -n '1~4p' | sed 's/\s.*$//' | sed 's/^@//g' > Psam-1_final_bbduk_reverse_paired_headers```
+> ```for f in Lib-1 Lib-2 Lib-3 Lib-4 Lib-5; do sed -n '1~4p' $f.fastp_adapter_fasta_polyg3_polyx_min36_minlowcomplexity_bbduk_minuspolyA_k15_hdist0_reverse-paired.fq | sed 's/\s.*$//' | sed 's/^@//g' > $f.final_bbduk_reverse_paired_headers; done```
 >
 ### 1.8. Pull sequences from reverse paired file of the forward paired file into a new file using pullseq 
 >
