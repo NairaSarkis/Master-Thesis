@@ -183,7 +183,7 @@ Versions of implemented programs:
 > 
 > ```cat kallisto21_sorted_bam_list | parallel -j 12 umi_tools dedup -I {} --output-stats={}.deduplicated -S {}.deduplicated.bam```
 > 
-> ### 6. Create expression matrix from UMI counts
+### 6. Create expression matrix from UMI counts
 > 
 > Create a .gtf file from the .gff3 annotation file
 > 
