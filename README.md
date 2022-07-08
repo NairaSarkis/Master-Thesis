@@ -110,7 +110,11 @@ Versions of implemented programs:
 ## 3. CEL-Seq2 pipeline
 ### 1. Removing adapters and quality control
 >
-### 1.1. Create seperate fasta files with known adapters (https://github.com/OpenGene/fastp/blob/master/src/knownadapters.h) for each Library in this format:
+### 1.1. Create seperate fasta files with known adapters
+>
+> Known adapters can be looked up in the fastp known adapters file (https://github.com/OpenGene/fastp/blob/master/src/knownadapters.h).
+> 
+> Create seperate fasta files for each Library in this format:
 >
 > ![Psam_adapters](https://user-images.githubusercontent.com/104494962/177975386-41e916b1-57fe-4c07-ad79-82997981312c.png) 
 > 
