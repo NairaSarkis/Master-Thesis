@@ -84,7 +84,7 @@ Versions of implemented programs:
 > 
 > ```cat Psam*.fa.tsv > interproscan-final.fa.tsv```
 
-## 3. CELSeq2 downstream analysis 
+## 3. CEL-Seq2 pipeline 
 
 ### Tools implemented in this analysis:
 
