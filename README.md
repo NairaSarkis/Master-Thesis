@@ -1,5 +1,5 @@
 # **Naïra Sarkis/Master Thesis**
-In the following, further information on implemented tools and commands used for the bioinformatic analyses in my Master's Thesis are provided. All bioinformatic analyses have been performed on the HPC RRZK CHEOPS of the Regional Computing Centre (RRZK) of the University of Cologne, if not noted otherwise. 
+In the following, further information on implemented tools and commands used for the bioinformatic analyses in my Master's Thesis are provided. All bioinformatic analyses have been performed on the HPC RRZK CHEOPS of the Regional Computing Centre (RRZK) of the University of Cologne using SLURM scripts, if not noted otherwise.
 
 Versions of implemented programs:
 
@@ -15,7 +15,7 @@ Versions of implemented programs:
 > 
 > ```fasterq-dump -S SRR8243961``` 
 > 
-> For better program compatibility, headers of read files are modified using sed command. Dots in headers are exchanged with underspace and everything starting from the first blank space in a line is deleted
+> For better program compatibility, headers of read files are modified using sed command. Dots in headers are exchanged with underspace and everything starting from the first blank space in a line is deleted.
 > 
 > ```tar -zcvf SRR8243961.tar.gz```
 > 
@@ -41,18 +41,18 @@ Versions of implemented programs:
 >
 > ```braker.pl --species=PlectusSambesii --softmasking --AUGUSTUS_CONFIG_PATH=/scratch/nsarkisk/Psam_annotation/augustus-config/ --genome=psambesii_genome.fasta.masked --bam=psambesii-gsnap.bam.sorted```
 > 
-> A gff3 file containing the annotation is obtained and a file containing all coding sequences (CDS)
+> A gff3 file containing the annotation is obtained and a file containing all coding sequences (CDS).
 
 ## 2. *P. sambesii* functional annotation 
 ### 2.1 Orthology Inference and hox gene analysis
 
 ### 2.1.1 OrthoFinder Analysis
 > 
-> The annotation gff3 file from the braker output is converted into the right gff3 format using agat
+> The annotation gff3 file from the braker output is converted into the right gff3 format using agat.
 > 
 > ```agat_sp_extract_sequences.pl -g longest.gff3 -f psam-genome_folded.fasta -o longest.fa -p```
 > 
-> Headers are changed to "PLESAM|ID" using sed command
+> Headers are changed to "PLESAM|ID" using sed command.
 > 
 > Directory "Fasta_files" is created and contains *Plectus sambesii* proteome from braker2 output and proteosome fasta files from species described in Material & Methods.
 > 
@@ -68,7 +68,7 @@ Versions of implemented programs:
 > 
 > ```blastp -query hox-proteins-plectus.fasta -db psam_PB3_r3.braker3.fasta -evalue 1e-30 -max_target_seqs 5 -outfmt 6 -out blastp_hox_vs_proteome.csv```
 > 
-> The output csv file contains hox genes as query and corresponding target sequence IDs in new *P. sambesii* proteome. Target sequence IDs are then used to find hox proteins in contigs of new annotation gff3 file
+> The output csv file contains hox genes as query and corresponding target sequence IDs in new *P. sambesii* proteome. Target sequence IDs are then used to find hox proteins in contigs of new annotation gff3 file.
 >
 > ```grep '>target-sequenceID<' psam_PB3_r3.braker.gff3 > hox_'target-sequenceID'```
 >
@@ -77,19 +77,19 @@ Versions of implemented programs:
 > 
 > OrthoFinder creates a directory "Orthogroup_Sequences" by default, containing amino acid fasta sequences of all genes within each orthogroup. Fasta files matching respective Hox IDs are stored in new directories.
 > 
-> Orthogroup fasta files to each hox protein are aligned using mafft
+> Orthogroup fasta files to each hox protein are aligned using mafft.
 > 
 > ```mafft --localpair --maxiterate 1000 OG0000191.fa > OG0000191.fa.aln```
 > 
-> Spurious sequences are removed using trimal
+> Spurious sequences are removed using trimal.
 > 
 > ```trimal -in OG0007202.fa.aln -out OG0007202.fa.aln.less.clw -resoverlap 0.75 -seqoverlap 80 -clustal```
 > 
-> Regions that do not align well are removed automatically
+> Regions that do not align well are removed automatically.
 >
 > ```trimal -in OG0000191b.fa.aln -out OG0000191b.fa.aln.clean.clw -automated1 -clustal```
 > 
-> Maximum likelihood phylogenic trees are generated using iqtree
+> Maximum likelihood phylogenic trees are generated using iqtree.
 > 
 > ```iqtree2 -s OG0016393.fa.aln.clean.clw -m TEST -bb 1000 -nt AUTO```
 
@@ -118,52 +118,51 @@ Versions of implemented programs:
 > 
 > RP1 is the universal adapter for small RNA Illumina libraries and RPI2, RP9, RPI10, RPI11 are the indexed adapters, respectively.
 >
-> Adapters are removed according to defined adapters in fasta files, followed by quality control
+> Adapters are removed according to defined adapters in fasta files, followed by quality control.
 > 
 > ```fastp -i Psam-1_1.fq.gz -I Psam-1_2.fq.gz -o Psam-1_fastp_adapter_fasta_polyg3_polyx_min12_forward_paired.fq.gz -O Psam-1_fastp_adapter_fasta_polyg3_polyx_min12_reverse_paired.fq.gz --unpaired1 Psam-1_fastp_adapter_fasta_polyg3_polyx_min12_forward_unpaired.fq.gz --unpaired2 Psam-1_fastp_adapter_fasta_polyg3_polyx_min12_reverse_unpaired.fq.gz -g --poly_g_min_len 3 -x -l 12 --adapter_fasta adapters_Psam-1.fa --cut_front --cut_front_mean_quality 3 --cut_tail --cut_tail_mean_quality 3 --cut_right --cut_right_mean_quality 15 -p -j Psam-1_fastp_adapter_fasta_polyg3_polyx_min12.json -h Psam-1_fastp_adapter_fasta_polyg3_polyx_min12.html```
 >
 > In NextSeq, a polyG tail often occurs at the end of reads as unreadable bases are read as G. -g flag these if least three Gs in a row are present. Other poly tails are removed with -x option. Reads with less than 12 bases are removed with option -l 12. Bad quality front and tail areas are removed. The option --cut_right is a sliding window function that removes very low quality regions in the middle areas. Overrpresented read analysis in performed with -p flag. -json and -html outputs are created. A minimum length of 12 is given for trimming to remove reads only containing UMI and barcode.
 >
-> Reads shorter than 36 bases are removed from reverse paired reads
+> Reads shorter than 36 bases are removed from reverse paired reads.
 > 
 > ```fastp -i Psam-1_fastp_adapter_fasta_polyg3_polyx_min12_reverse_paired.fq.gz -o Psam-1_fastp_adapter_fasta_polyg3_polyx_min36_reverse_paired.fq.gz -l 36 -p -j Psam-1_fastp_adapter_fasta_polyg3_polyx_min36_reverse_paired.json -h Psam-1_fastp_adapter_fasta_polyg3_polyx_min36_reverse_paired.html```
 >
-> Removing low complexity reads (default complexity level)  
+> Removing low complexity reads (default complexity level).  
 >
 > ```fastp -i Psam-1_fastp_adapter_fasta_polyg3_polyx_min36_reverse_paired.fq.gz -o Psam-1_fastp_adapter_fasta_polyg3_polyx_min36_minlowcomplexity_reverse_paired.fq.gz -l 36 -y -p -j Psam-1_fastp_adapter_fasta_polyg3_polyx_min36_minlowcomplexity_reverse_paired.json -h Psam-1_fastp_adapter_fasta_polyg3_polyx_min36_minlowcomplexity_reverse_paired.html```
 >
-> Removing reads with 15xA bases using bbduk
+> Removing reads with 15xA bases using bbduk.
 >
 > ```bbduk.sh k=15 in=Psam-1_fastp_adapter_fasta_polyg3_polyx_min36_minlowcomplexity_reverse_paired.fq.gz out=Psam-1_fastp_adapter_fasta_polyg3_polyx_min36_minlowcomplexity_bbduk_minuspolyA_k15_hdist0_reverse_paired.fq.gz outm=Psam-1_fastp_adapter_fasta_polyg3_polyx_min36_minlowcomplexity_bbduk_onlypolyA_k15_hdist0_reverse_paired.fq.gz literal=AAAAAAAAAAAAAAA hammingdistance=0```
 >
 > Remaining reverse reads are paired with forward reads and forward reads without pair are removed. A file with the fraction of the headers of the reverse paired file that can also be found in the corresponding headers of the forward read file is prepared for all libraries.
 >
-> ```for f in Lib-1 Lib-2 Lib-3 Lib-4 Lib-5; do sed -n '1~4p' $f.fastp_adapter_fasta_polyg3_polyx_min36_minlowcomplexity_bbduk_minuspolyA_k15_hdist0_reverse-paired.fq | sed 's/\s.*$//' | sed 's/^@//g' > $f.final_bbduk_reverse_paired_headers; done```
+> ```for f in Psam-1 Psam-3 Psam-4 Psam-5; do sed -n '1~4p' $f.fastp_adapter_fasta_polyg3_polyx_min36_minlowcomplexity_bbduk_minuspolyA_k15_hdist0_reverse-paired.fq | sed 's/\s.*$//' | sed 's/^@//g' > $f.final_bbduk_reverse_paired_headers; done```
 >
-### 1.8. Pull sequences from reverse paired file of the forward paired file into a new file using pullseq 
+> Sequences from reverse paired file of the forward paired file are saved into a new file using pullseq. 
 >
-> ```pullseq -i Psam-1_fastp_adapter_fasta_polyg3_polyx_min12_forward_paired.fq -n Psam-1_final_bbduk_reverse_paired_headers > Psam-1_final_bbduk_forward_paired.fq```
+> ```for f in Psam-1 Psam-3 Psam-4 Psam-5; do pullseq -i ../$f.fastp_adapter_fasta_polyg3_polyx_min12_forward_paired.fq -n $f.final_bbduk_reverse_paired_headers > $f.final_bbduk_forward_paired.fq; done```
 >
-> Repeat for reverse reads
+> Repeat for reverse reads.
 >
-> ```pullseq -i Psam-1_fastp_adapter_fasta_polyg3_polyx_min12_reverse_paired.fq -n Psam-1_final_bbduk_reverse_paired_headers > Psam-1_final_bbduk_reverse_paired.fq```
+> ```for f in Psam-1 Psam-3 Psam-4 Psam-5; do pullseq -i ../$f.fastp_adapter_fasta_polyg3_polyx_min12_reverse_paired.fq -n $f.final_bbduk_reverse_paired_headers > $f.final_bbduk_reverse_paired.fq; done```
 >
 ### 2. Extract UMIs from all forward reads and write into header of both forward and reverse reads
 >
-> ```umi_tools extract -I Psam-1_fastp_forward_paired.fq --bc-pattern=NNNNNN --read2-in=Psam-1_fastp_reverse_paired.fq --stdout=Psam-1_fastp_forward_paired_umiext.fq --read2-out=Psam-1_fastp_reverse_paired_umiext.fq```
+> ```for f in Psam-1 Psam-3 Psam-4 Psam-5; do umi_tools extract -I $f.finaltrim_forward_paired.fq --bc-pattern=NNNNNN --read2-in=$f.finaltrim_reverse_paired.fq --stdout=$f.finaltrim_forward_paired_umiext.fq --read2-out=$f.finaltrim_reverse_paired_umiext.fq; done```
 >
-> Run demultiplex to sort the 12 bases forward fastq reads into separate files according to their Celseq2 barcode.
-> We are sorting the bases at positions 0-6 (UMIs have been extracted). The programme, by default, allows for one mismatch.
+> Run demultiplex to sort the 12 bases forward fastq reads into separate files according to their Celseq2 barcode. Bases are sorted at positions 0-6 (UMIs have been extracted), while the programme allows for one mismatch by default. The barcodes are all different in at least two positions and just one error will still allow to sort the reas to the respective barcode.
 > 
 > The 24 barcodes that were used are written into an Excel file and saved as tab delimited .txt file and renamed with suffix .tsv [Barcodes](https://user-images.githubusercontent.com/104494962/177957129-58f7e0f9-d799-4981-88a7-6e7a1bfc2f9a.png)
 > 
-> The forward paired reads are used and sorted into files according to the embryo sample they came from by using the barcodes.
+> The forward paired reads after fastp trimming are used and sorted into files according to the embryo sample they came from by using the barcodes.
 > 
-> ```demultiplex demux -r -s 1 -e 6 barcodes24.tsv Psam-1_fastp_forward_paired_umiext.fq```
+> ```for f in Psam-1 Psam-3 Psam-4 Psam-5; do demultiplex demux -r -s 1 -e 6 barcodes24.tsv $f.finaltrim_forward_paired_umiext.fq; done```
 > 
-> Only the headers from the forward reads are needed and extracted using sed.
+> Only the headers from the forward reads are needed and are sorted into files according to the embryo sample they came from using sed.
 > 
-> ```for f in Psam-1_fastp_forward_paired_Celseq*.fq; do sed -n '1~4p' $f > $f.list; done```
+> ```for f in Psam-1.finaltrim_forward_paired_Celseq*.fq; do sed -n '1~4p' $f > $f.list; done``` Repeat for each library.
 >
 > Create a list of all headers without "@" and without everything after the first space character.
 > 
@@ -171,9 +170,9 @@ Versions of implemented programs:
 >
 >```for f in *.list.fixedlist; do sed 's/^@//g' $f > $f.2; done```
 >
-> The sequences for each sample are extracted into seperate files
+> The sequences for each sample are extracted into seperate files.
 > 
-> ```for f in Psam-1*.list.fixedlist.2; do pullseq -i Psam-1_fastp_reverse_paired_umiext.fq -n $f > $f.sequences_pullseq.fq; done```
+> ```for f in Psam-1*.list.fixedlist.2; do pullseq -i Psam-1_fastp_reverse_paired_umiext.fq -n $f > $f.sequences_pullseq.fq; done``` Repeat for each library.
 >
 ### 3. Mapping reads onto genome
 >
@@ -181,7 +180,7 @@ Versions of implemented programs:
 > 
 > ```kallisto index -i P_sambesii21.index -k 21 psambesii_genome.fasta.masked```
 > 
-> Mapping of each of the demultiplexed samples against the index. Only transcript read is mapped. -l flag describes size of library (200bp, as measured by femto pulse analysis), -s flag describes variation, set to 10 % of the size here. 
+> Mapping of each of the demultiplexed samples against the index. Only transcript read is mapped. -l flag describes size of library (200bp, as measured by femto pulse analysis), -s flag describes variation, set to 10 % of the size here. Pseudomapping is performed to retain the information of how many reads map to which gene.
 > 
 > ```for f in ./Psam-1*sequences_pullseq.fq; do kallisto quant -i ./P_sambesii21.index --pseudobam -o $f.kallisto21 --single -l 200 -s 20 $f > $f.kallisto21.sam; done; for f in ./Psam-3*sequences_pullseq.fq; do kallisto quant -i ./P_sambesii21.index --pseudobam -o $f.kallisto21 --single -l 200 -s 20 $f > $f.kallisto21.sam; done; for f in ./Psam-4*sequences_pullseq.fq; do kallisto quant -i ./P_sambesii21.index --pseudobam -o $f.kallisto21 --single -l 200 -s 20 $f > $f.kallisto21.sam; done; for f in ./Psam-5*sequences_pullseq.fq; do kallisto quant -i ./P_sambesii21.index --pseudobam -o $f.kallisto21 --single -l 200 -s 20 $f > $f.kallisto21.sam; done```
 > 
