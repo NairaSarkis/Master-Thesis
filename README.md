@@ -118,11 +118,15 @@ Versions of implemented programs:
 >
 > ![Psam_adapters](https://user-images.githubusercontent.com/104494962/177975386-41e916b1-57fe-4c07-ad79-82997981312c.png) 
 > 
-> RP1 is the universal adapter for small RNA Illumina libraries and RPI2, RP9, RPI10, RPI11 are the indexed adapters, respectively.  
+> RP1 is the universal adapter for small RNA Illumina libraries and RPI2, RP9, RPI10, RPI11 are the indexed adapters, respectively.
 >
-### 1.2. Adapters are removed according to defined adapters in fasta files, followed by quality control
+### 1.2. Remove adapters and quality control
+>
+> Adapters are removed according to defined adapters in fasta files, followed by quality control.
 > 
 > ```fastp -i Psam-1_1.fq.gz -I Psam-1_2.fq.gz -o Psam-1_fastp_adapter_fasta_polyg3_polyx_min12_forward_paired.fq.gz -O Psam-1_fastp_adapter_fasta_polyg3_polyx_min12_reverse_paired.fq.gz --unpaired1 Psam-1_fastp_adapter_fasta_polyg3_polyx_min12_forward_unpaired.fq.gz --unpaired2 Psam-1_fastp_adapter_fasta_polyg3_polyx_min12_reverse_unpaired.fq.gz -g --poly_g_min_len 3 -x -l 12 --adapter_fasta adapters_Psam-1.fa --cut_front --cut_front_mean_quality 3 --cut_tail --cut_tail_mean_quality 3 --cut_right --cut_right_mean_quality 15 -p -j Psam-1_fastp_adapter_fasta_polyg3_polyx_min12.json -h Psam-1_fastp_adapter_fasta_polyg3_polyx_min12.html```
+>
+> In NextSeq, a polyG tail often occurs at the end of reads as unreadable bases are read as G. -g flag these if least three Gs in a row are present. Other poly tails are removed with -x option. Reads with less than 12 bases are removed with option -l 12. Bad quality front and tail areas are removed. The option --cut_right is a sliding window function that removes very low quality regions in the middle areas. Overrpresented read analysis in performed with -p flag. -json and -html outputs are created.
 >
 ### 1.3. Reads shorter than 36 bases are removed from reverse paired reads
 > 
