@@ -408,7 +408,7 @@ Versions of implemented programs:
 > ```t_ordered = sort(t, decreasing = T)```
 > ```exp_tpm_ord = mat[names(t_ordered), ]```
 > 
-> ```write.csv(exp_tpm_ord, "./exp_tpm_ord.csv", row.names = TRUE)``` Create a file with the new gene order
+> ```write.csv(exp_tpm_ord, "./exp_tpm_ord.csv", row.names = TRUE)``` Creates a file with the new gene order
 > 
 > Create a heatmap from the same R session
 > 
@@ -426,4 +426,4 @@ Versions of implemented programs:
 > 
 > ```print(heatmapdf)``` Prints the heatmap to the PDF file
 > 
-> ```dev.off()``` This closes the PDF file
+> ```dev.off()``` Closes the PDF file
