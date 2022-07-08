@@ -2,7 +2,9 @@
 In the following, further information on implemented tools and commands used for the bioinformatic analyses in my Master's Thesis are provided. All bioinformatic analyses have been performed on the HPC RRZK CHEOPS of the Regional Computing Centre (RRZK) of the University of Cologne, if not noted otherwise. 
 
 Versions of implemented programs:
-###Table
+![program-versions](https://user-images.githubusercontent.com/104494962/178009246-0e02d9ae-09ab-46ce-b674-3b058667d23e.png)
+
+
 ## 1. *P. sambesii* whole genome annotation
 ### 1.1 Obtaining RNA-seq data from NCBI and preparing read files
 > 
