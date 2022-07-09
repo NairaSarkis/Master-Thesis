@@ -347,7 +347,7 @@ Versions of implemented programs:
 > 
 ### 7. QC of single embyro experiment
 >  
-> UMI counts per embryo, gene counts per embryo and complexity were determined in the last step. Here the ratio between UMIs corresponding to mitochondrial genes vs. other genes is calculated. This is done more easily if the mitochondrial contig is part of the assembly. In this thesis an genome assembly was used, where the mitochondiral contig had been removed in a decontamination step. The mitocondrial contig is being retrieved from an original assembly via BLAST search against a database created for this assembly.
+> UMI counts per embryo, gene counts per embryo and complexity were determined in the last step. Here the ratio between UMIs corresponding to mitochondrial genes vs. other genes is calculated. This is done more easily if the mitochondrial contig is part of the assembly. In this thesis an genome assembly was used, where the mitochondrial contig had been removed in a decontamination step. The mitochondrial contig is being retrieved from an original assembly via BLAST search against a database created for this assembly.
 > 
 > Create a local database for the raw genome assembly
 > ```module add blast+```
