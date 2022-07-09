@@ -47,10 +47,16 @@ Versions of implemented programs:
 ### 2.1 Orthology Inference and hox gene analysis
 
 ### 2.1.1 OrthoFinder Analysis
-> 
+>
+> This section describes how the *P. sambesii* proteome was prepared for orthology analysis. 
+>
 > The annotation gff3 file from the braker output is converted into the right gff3 format using agat.
+>
+> ```agat_convert_sp_gxf2gxf.pl --gff psam_PB3_r3.braker.gff3 -o annotation.gff3```
+>
+> The longest peptide sequence is extracted.
 > 
-> ```agat_sp_extract_sequences.pl -g longest.gff3 -f psam-genome_folded.fasta -o longest.fa -p```
+> ```agat_sp_extract_sequences.pl -g longest.gff3 -f psam-genome.fasta -o longest.fa -p```
 > 
 > Headers are changed to "PLESAM|ID" using sed command.
 > 
