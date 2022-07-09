@@ -111,7 +111,7 @@ Versions of implemented programs:
 >
 > This pipeline used process the sequencing results from CEL-Seq2 was developed by Dr. Tarja Hoffmeyer of the worm~lab, Cologne.
 >
-### 1. Removing adapters and quality control
+### 3.1. Removing adapters and quality control
 >
 > Create seperate fasta files with known adapters that can be looked up in the fastp known adapters file (https://github.com/OpenGene/fastp/blob/master/src/knownadapters.h).
 > 
@@ -151,7 +151,7 @@ Versions of implemented programs:
 >
 > ```for f in Psam-1 Psam-3 Psam-4 Psam-5; do pullseq -i ../$f.fastp_adapter_fasta_polyg3_polyx_min12_reverse_paired.fq -n $f.final_bbduk_reverse_paired_headers > $f.final_bbduk_reverse_paired.fq; done```
 >
-### 2. Extract UMIs from all forward reads and write into header of both forward and reverse reads
+### 3.2. Extract UMIs from all forward reads and write into header of both forward and reverse reads
 >
 > ```for f in Psam-1 Psam-3 Psam-4 Psam-5; do umi_tools extract -I $f.finaltrim_forward_paired.fq --bc-pattern=NNNNNN --read2-in=$f.finaltrim_reverse_paired.fq --stdout=$f.finaltrim_forward_paired_umiext.fq --read2-out=$f.finaltrim_reverse_paired_umiext.fq; done```
 >
@@ -177,7 +177,7 @@ Versions of implemented programs:
 > 
 > ```for f in Psam-1*.list.fixedlist.2; do pullseq -i Psam-1_fastp_reverse_paired_umiext.fq -n $f > $f.sequences_pullseq.fq; done``` Repeat for each library.
 >
-### 3. Mapping reads onto genome
+### 3.3. Mapping reads onto genome
 >
 > Indexing the genome using kallisto. k-mer size is set 21 for small reads. 
 > 
@@ -187,7 +187,7 @@ Versions of implemented programs:
 > 
 > ```for f in ./Psam-1*sequences_pullseq.fq; do kallisto quant -i ./P_sambesii21.index --pseudobam -o $f.kallisto21 --single -l 200 -s 20 $f > $f.kallisto21.sam; done; for f in ./Psam-3*sequences_pullseq.fq; do kallisto quant -i ./P_sambesii21.index --pseudobam -o $f.kallisto21 --single -l 200 -s 20 $f > $f.kallisto21.sam; done; for f in ./Psam-4*sequences_pullseq.fq; do kallisto quant -i ./P_sambesii21.index --pseudobam -o $f.kallisto21 --single -l 200 -s 20 $f > $f.kallisto21.sam; done; for f in ./Psam-5*sequences_pullseq.fq; do kallisto quant -i ./P_sambesii21.index --pseudobam -o $f.kallisto21 --single -l 200 -s 20 $f > $f.kallisto21.sam; done```
 > 
-### 4. Sorting and indexing BAM files
+### 3.4. Sorting and indexing BAM files
 > 
 > Since all created kallisto subdirectories are named "pseudoalignments.bam", they are renamed and retrieved from the subdirectories. All mapping information is stored in the pseudobam files.
 > 
@@ -197,7 +197,7 @@ Versions of implemented programs:
 > 
 > The created .bai index files need to be in the same directory moving forward.
 >
-### 5. UMI-tools deduplication
+### 3.5. UMI-tools deduplication
 > 
 > Create a list of files
 > 
@@ -207,7 +207,7 @@ Versions of implemented programs:
 > 
 > ```cat kallisto21_sorted_bam_list | parallel -j 12 umi_tools dedup -I {} --output-stats={}.deduplicated -S {}.deduplicated.bam```
 > 
-### 6. Create expression matrix from UMI counts
+### 3.6. Create expression matrix from UMI counts
 > 
 > Create a .gtf file from the .gff3 annotation file
 > 
@@ -345,7 +345,7 @@ Versions of implemented programs:
 > 
 > ```write.csv(UMIcountsperembryo, "./UMIcountsperembryo.csv", row.names = TRUE)``` Writes .csv file
 > 
-### 7. QC of CEL-Seq2 single embryo experiment
+### 3.7. QC of CEL-Seq2 single embryo experiment
 >  
 > UMI counts per embryo, gene counts per embryo and complexity were determined in the last step. Here the ratio between UMIs corresponding to mitochondrial genes vs. other genes is calculated. This is done more easily if the mitochondrial contig is part of the assembly. In this thesis an genome assembly was used, where the mitochondrial contig had been removed in a decontamination step. The mitochondrial contig is being retrieved from an original assembly via BLAST search against a database created for this assembly.
 > 
@@ -376,7 +376,7 @@ Versions of implemented programs:
 > Create a table in Microsoft Excel in this format:
 > Embryo   nUMI  nGenes  nUMI/nGenes  mito UMI fraction
 > 
-### 8. Sorting of gene expression and heatmap creation
+### 3.8. Sorting of gene expression and heatmap creation
 > 
 > Same R environment is used as above.
 > 
