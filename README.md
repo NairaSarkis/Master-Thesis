@@ -345,7 +345,7 @@ Versions of implemented programs:
 > 
 > ```write.csv(UMIcountsperembryo, "./UMIcountsperembryo.csv", row.names = TRUE)``` Writes .csv file
 > 
-### 7. QC of single embyro experiment
+### 7. QC of CEL-Seq2 single embryo experiment
 >  
 > UMI counts per embryo, gene counts per embryo and complexity were determined in the last step. Here the ratio between UMIs corresponding to mitochondrial genes vs. other genes is calculated. This is done more easily if the mitochondrial contig is part of the assembly. In this thesis an genome assembly was used, where the mitochondrial contig had been removed in a decontamination step. The mitochondrial contig is being retrieved from an original assembly via BLAST search against a database created for this assembly.
 > 
@@ -353,19 +353,19 @@ Versions of implemented programs:
 > ```module add blast+```
 > ```makeblastdb -in raw_genome_assembly.fasta -dbtype nucl -title raw_genome_assembly```
 > 
-> BLAST search of the C. elegans cox-1 protein to identify the mitochondrial contig
+> BLAST search of the C. elegans cox-1 protein to identify the mitochondrial contig.
 > 
 > ```tblastn -query CELE_cox1aa.fa -db raw_genome_assembly.fasta -evalue 1e-2 -max_target_seqs 5 -outfmt 6 -out```
 > 
-> Extract the contig and remove lines inbetween the sequences
+> Extract the contig and remove lines inbetween the sequences.
 > 
 > ```awk '/^>/ { print (NR==1 ? "" : RS) $0; next } { printf "%s", $0 } END { printf RS }' raw_genome_assembly.fasta > raw_genome_assembly_minus_new_lines.fasta```
 > 
-> Check for the line containing the string ">contig_3238" and copy this and the next line containing the sequence into a new file
+> Check for the line containing the string ">contig_3238" and copy this and the next line containing the sequence into a new file.
 > 
 > ```grep -A 1 ">contig_3238" raw_genome_assembly_minus_new_lines.fasta > contig3238.fasta```
 > 
-> Confirm the identity of the mitochondrial contig by perfomring a BLAST search against the NCBI nt database
+> Confirm the identity of the mitochondrial contig by perfomring a BLAST search against the NCBI nt database.
 > 
 > MITOS (http://mitos.bioinf.uni-leipzig.de/) is used to annotate the mitochondrial contig. An .gff annotation file is created and shows all regions present in the mitochondrial contig.
 > 
@@ -378,7 +378,7 @@ Versions of implemented programs:
 > 
 ### 8. Sorting of gene expression and heatmap creation
 > 
-> Same R environment is used as above
+> Same R environment is used as above.
 > 
 > ```conda activate r_4_1```
 > 
