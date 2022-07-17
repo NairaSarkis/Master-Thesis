@@ -385,6 +385,7 @@ Versions of implemented programs:
 > 
 > Create a table in Microsoft Excel in this format:
 > Embryo   nUMI  nGenes  nUMI/nGenes  mito UMI fraction
+>
 > 
 ### 3.8. Sorting of gene expression and heatmap creation
 > 
