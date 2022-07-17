@@ -203,6 +203,10 @@ Versions of implemented programs:
 > 
 > The created .bai index files need to be in the same directory moving forward.
 >
+> The mapping statistics were summarized by using MultiQC and retrieved as .html file.
+>
+> ```multiqc .```
+>
 ### 3.5. UMI-tools deduplication
 > 
 > Create a list of files
