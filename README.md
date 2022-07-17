@@ -3,7 +3,7 @@ In the following, further information on implemented tools and commands used for
 
 Versions of implemented programs:
 
-![program-versionen](https://user-images.githubusercontent.com/104494962/178162337-b871f246-838e-4fb5-8f33-1c77e6021cd6.png)
+![programs](https://user-images.githubusercontent.com/104494962/179422249-d29db67b-4518-413e-abf8-58ecd67949dd.png)
 
 
 ## 1. *P. sambesii* whole genome annotation
